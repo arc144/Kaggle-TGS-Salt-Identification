@@ -108,33 +108,30 @@ class UNetResNet34(nn.Module):
 
     def forward(self, x):
         # batch_size,C,H,W = x.shape
-
         mean = [0.485, 0.456, 0.406]
         std = [0.229, 0.224, 0.225]
-        x = torch.cat([
-            (x - mean[0]) / std[0],
-            (x - mean[1]) / std[1],
-            (x - mean[2]) / std[2],
-        ], 1)
+        x[:, 0, :, :] = (x[:, 0, :, :] - mean[0]) / std[0]
+        x[:, 1, :, :] = (x[:, 1, :, :] - mean[1]) / std[1]
+        x[:, 2, :, :] = (x[:, 2, :, :] - mean[2]) / std[2]
 
         x = self.conv1(x)
         x = F.max_pool2d(x, kernel_size=2, stride=2)
 
-        e2 = self.encoder2(x)   # ; print('e2',e2.size())
-        e3 = self.encoder3(e2)  # ; print('e3',e3.size())
-        e4 = self.encoder4(e3)  # ; print('e4',e4.size())
-        e5 = self.encoder5(e4)  # ; print('e5',e5.size())
+        e2 = self.encoder2(x)    #; print('e2',e2.size())
+        e3 = self.encoder3(e2)   #; print('e3',e3.size())
+        e4 = self.encoder4(e3)   #; print('e4',e4.size())
+        e5 = self.encoder5(e4)   #; print('e5',e5.size())
 
         # f = F.max_pool2d(e5, kernel_size=2, stride=2 )  #; print(f.size())
         # f = F.upsample(f, scale_factor=2, mode='bilinear', align_corners=True)#False
         # f = self.center(f)                       #; print('center',f.size())
-        f = self.center(e5)
+        f = self.center(e5)  #; print('center',f.size())
 
-        f = self.decoder5(torch.cat([f, e5], 1))  # ; print('d5',f.size())
-        f = self.decoder4(torch.cat([f, e4], 1))  # ; print('d4',f.size())
-        f = self.decoder3(torch.cat([f, e3], 1))  # ; print('d3',f.size())
-        f = self.decoder2(torch.cat([f, e2], 1))  # ; print('d2',f.size())
-        f = self.decoder1(f)                      # ; print('d1',f.size())
+        f = self.decoder5(torch.cat([f, e5], 1))   #; print('d5',f.size())
+        f = self.decoder4(torch.cat([f, e4], 1))   #; print('d4',f.size())
+        f = self.decoder3(torch.cat([f, e3], 1))   #; print('d3',f.size())
+        f = self.decoder2(torch.cat([f, e2], 1))   #; print('d2',f.size())
+        f = self.decoder1(f)                       #; print('d1',f.size())
 
         # f = F.dropout2d(f, p=0.20)
         logit = self.logit(f)  # ; print('logit',logit.size())
@@ -146,18 +143,14 @@ class UNetResNet34(nn.Module):
 
         #loss = PseudoBCELoss2d()(logit, truth)
         #loss = FocalLoss2d()(logit, truth, type='sigmoid')
+        # loss = Loss.DiceLoss()(logit, truth)
+        # loss = nn.BCEWithLogitsLoss()(logit, truth)
         loss = Loss.RobustFocalLoss2d()(logit, truth, type='sigmoid')
         return loss
 
-    # def criterion(self,logit, truth):
-    #
-    #     loss = F.binary_cross_entropy_with_logits(logit, truth)
-    #     return loss
-
-    def metric(self, logit, truth, threshold=0.5):
-        prob = F.sigmoid(logit)
-        dice = accuracy(prob, truth, threshold=threshold, is_average=True)
-        return dice
+    def metric(self, logit, truth):
+        iou = Loss.IoU(logit, truth)
+        return iou
 
     def set_mode(self, mode):
         self.mode = mode

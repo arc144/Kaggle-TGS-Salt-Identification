@@ -1,15 +1,25 @@
 from Dataset import TGS_Dataset
 from Model import UNetResNet34
+from contextlib import contextmanager
+from train import train
+import time
+
+@contextmanager
+def timer(title):
+    t0 = time.time()
+    yield
+    print("{} - done in {:.0f}s".format(title, time.time() - t0))
 
 TRAIN_PATH = './Data/Train'
 TEST_PATH = './Data/Test'
 
 train_dataset = TGS_Dataset(TRAIN_PATH)
-loaders = train_dataset.yield_dataloader()
+loaders, ids = train_dataset.yield_dataloader()
 
 net = UNetResNet34()
 
 for i, (train_loader, val_loader) in enumerate(loaders):
-    print('Starting fold {} out of {}'.format(i, len(loaders)))
-    if i:
-        pass
+    with timer('Fold {}'.format(i)):
+        if not i:
+            train(net, train_loader, val_loader, lr=0.005, n_epoch=20)
+

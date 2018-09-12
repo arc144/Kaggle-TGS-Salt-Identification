@@ -4,9 +4,15 @@ import pandas as pd
 from PIL import Image
 import matplotlib.pyplot as plt
 import torch
+import torch.nn.functional as F
 from torch.utils.data.dataset import Dataset
 from torch.utils.data import DataLoader
 from sklearn.model_selection import KFold
+
+def normalize(im):
+    if np.max(im):
+        im = (im - np.min(im)) / (np.max(im) - np.min(im))
+    return im
 
 
 class TorchDataset(Dataset):
@@ -26,9 +32,19 @@ class TorchDataset(Dataset):
             im, mask = self.transform(im, mask)
 
         # Convert image and label to torch tensors
-        im = torch.from_numpy(np.asarray(im))
-        mask = torch.from_numpy(np.asarray(mask))
-        return im, mask
+        im = np.asarray(im)
+        pad = ((14, 13), (14, 13), (0, 0))
+        im = np.pad(im, pad, 'reflect').transpose((2, 0, 1))
+        im = normalize(im)
+        im = torch.from_numpy(im).float()
+
+        mask = np.asarray(mask)
+        mask = np.expand_dims(mask, -1)
+        mask = np.pad(mask, pad, 'reflect').transpose((2, 0, 1))
+        mask = normalize(mask)
+        mask = torch.from_numpy(mask).float()
+
+        return index, im, mask
 
 
 class TGS_Dataset():
@@ -66,24 +82,24 @@ class TGS_Dataset():
                            shuffle=True,
                            random_state=seed)
                 loaders = []
+                idx = []
                 for train_ids, val_ids in kf.split(self.df['id'].values):
-                    print(self.df.iloc[
-                        train_ids])
                     train_loader = DataLoader(TorchDataset(self.df.iloc[
-                        train_ids]),
-                        shuffle=shuffle,
-                        num_workers=num_workers,
-                        batch_size=batch_size,
-                        pin_memory=True)
+                                                               train_ids]),
+                                              shuffle=shuffle,
+                                              num_workers=num_workers,
+                                              batch_size=batch_size,
+                                              pin_memory=True)
                     val_loader = DataLoader(TorchDataset(self.df.iloc[
-                        val_ids]),
-                        shuffle=shuffle,
-                        num_workers=num_workers,
-                        batch_size=batch_size,
-                        pin_memory=True)
+                                                             val_ids]),
+                                            shuffle=shuffle,
+                                            num_workers=num_workers,
+                                            batch_size=batch_size,
+                                            pin_memory=True)
+                    idx.append((train_ids, val_ids))
                     loaders.append((train_loader, val_loader))
         # elif data == 'test':
-        return loaders
+        return loaders, idx
 
     def visualize_sample(self, sample_size):
         samples = np.random.choice(self.df['id'].values, sample_size)
@@ -97,10 +113,19 @@ class TGS_Dataset():
             axs[0, i].imshow(im)
             axs[1, i].imshow(mask)
 
+
 if __name__ == '__main__':
     TRAIN_PATH = './Data/Train'
     TEST_PATH = './Data/Test'
 
-    dataset = TGS_Dataset(TRAIN_PATH, TEST_PATH)
-    dataset.visualize_sample(3)
-    plt.show()
+    dataset = TGS_Dataset(TRAIN_PATH)
+    # dataset.visualize_sample(3)
+    loaders, idx = dataset.yield_dataloader(data='train', split_method='kfold', nfold=5,
+                                            shuffle=True, seed=143,
+                                            num_workers=8, batch_size=10)
+    ids = []
+    for index, im, mask in loaders[0][0]:
+        ids.append(index)
+
+    print(len(ids))
+    # plt.show()
