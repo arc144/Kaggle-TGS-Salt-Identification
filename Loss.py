@@ -35,7 +35,7 @@ class RobustFocalLoss2d(nn.Module):
             if class_weight is None:
                 class_weight = [1] * 2  # [0.5, 0.5]
 
-            prob = F.sigmoid(logit)
+            prob = torch.sigmoid(logit)
             prob = prob.view(-1, 1)
             prob = torch.cat((1 - prob, prob), 1)
             select = torch.FloatTensor(len(prob), 2).zero_().cuda()
@@ -69,3 +69,16 @@ class RobustFocalLoss2d(nn.Module):
             loss = batch_loss
 
         return loss
+
+
+class BCE_Dice(nn.Module):
+    def __init__(self, smooth=1):
+        super(BCE_Dice, self).__init__()
+        self.smooth = smooth
+        self.dice = DiceLoss(smooth=smooth)
+        self.bce = nn.BCEWithLogitsLoss()
+
+    def forward(self, logit, truth):
+        dice = self.dice(logit, truth)
+        bce = self.bce(logit, truth)
+        return dice + bce

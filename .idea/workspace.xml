@@ -2,11 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="25da0947-e826-4da4-b870-428f3f5e4b8b" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/Analysis.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dataset.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Loss.py" beforeDir="false" afterPath="$PROJECT_DIR$/Loss.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model.py" beforeDir="false" afterPath="$PROJECT_DIR$/Model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model.py" beforeDir="false" afterPath="$PROJECT_DIR$/Models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/train.py" beforeDir="false" afterPath="$PROJECT_DIR$/train.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/train.py" beforeDir="false" afterPath="$PROJECT_DIR$/Network.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -18,33 +20,37 @@
     <session id="1700955081">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="4" />
+          <entry key="project.closed" value="7" />
           <entry key="project.open.time.0" value="1" />
-          <entry key="project.open.time.3" value="3" />
-          <entry key="project.opened" value="4" />
+          <entry key="project.open.time.3" value="4" />
+          <entry key="project.open.time.4" value="3" />
+          <entry key="project.opened" value="8" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="Python Console" value="104" />
-          <entry key="py" value="3440" />
+          <entry key="Python Console" value="408" />
+          <entry key="dummy" value="28" />
+          <entry key="py" value="11315" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="3544" />
+          <entry key="PLAIN_TEXT" value="28" />
+          <entry key="Python" value="11723" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="py" value="28" />
+          <entry key="py" value="90" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Python" value="28" />
+          <entry key="Python" value="90" />
         </counts>
       </usages-collector>
+      <usages-collector id="statistics.vcs.git.usages" />
     </session>
   </component>
   <component name="FavoritesManager">
@@ -52,26 +58,70 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="225">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Dataset.py">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1740">
-              <caret line="114" lean-forward="true" selection-start-line="114" selection-end-line="114" />
+            <state relative-caret-position="139">
+              <caret line="37" selection-start-line="37" selection-end-line="37" />
               <folding>
-                <element signature="e#0#9#0" expanded="true" />
-                <marker date="1536707257517" expanded="true" signature="313:389" ph="..." />
+                <element signature="e#0#31#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/train.py">
+        <entry file="file://$PROJECT_DIR$/Dataset.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="435">
-              <caret line="34" column="29" selection-start-line="34" selection-start-column="29" selection-end-line="34" selection-end-column="29" />
+            <state relative-caret-position="-240">
+              <caret line="150" column="20" selection-start-line="150" selection-start-column="20" selection-end-line="150" selection-end-column="20" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/anaconda3/envs/deep/lib/python3.5/site-packages/pandas/core/generic.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="146">
+              <caret line="4371" selection-start-line="4371" selection-end-line="4371" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/anaconda3/envs/deep/lib/python3.5/site-packages/torch/nn/modules/conv.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="139">
+              <caret line="690" selection-start-line="690" selection-end-line="690" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Network.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="425">
+              <caret line="127" selection-start-line="127" selection-end-line="127" />
               <folding>
                 <element signature="e#0#27#0" expanded="true" />
+                <marker date="1536933744567" expanded="true" signature="1314:1326" ph="..." />
+                <marker date="1536933744567" expanded="true" signature="5323:5735" ph="..." />
+                <marker date="1536933744567" expanded="true" signature="5768:6089" ph="..." />
+                <marker date="1536933744567" expanded="true" signature="6776:6829" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Models.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="122">
+              <caret line="174" column="35" selection-start-line="174" selection-start-column="35" selection-end-line="174" selection-end-column="35" />
+              <folding>
+                <element signature="e#0#13#0" expanded="true" />
+                <element signature="e#2292#4923#0" />
+                <element signature="e#7741#10436#0" />
               </folding>
             </state>
           </provider>
@@ -80,23 +130,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Analysis.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="18" column="18" lean-forward="true" selection-start-line="18" selection-start-column="18" selection-end-line="18" selection-end-column="18" />
+            <state relative-caret-position="385">
+              <caret line="31" selection-start-line="31" selection-end-line="31" />
               <folding>
                 <element signature="e#0#31#0" expanded="true" />
-                <marker date="1536706993178" expanded="true" signature="278:283" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/main.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="299">
-              <caret line="23" column="59" selection-start-line="23" selection-start-column="59" selection-end-line="23" selection-end-column="59" />
-              <folding>
-                <element signature="e#0#31#0" expanded="true" />
+                <marker date="1536846718374" expanded="true" signature="278:283" ph="..." />
               </folding>
             </state>
           </provider>
@@ -105,23 +143,37 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Loss.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="765">
-              <caret line="45" column="36" lean-forward="true" selection-start-line="45" selection-start-column="36" selection-end-line="45" selection-end-column="36" />
+            <state relative-caret-position="207">
+              <caret line="37" column="32" selection-start-line="37" selection-start-column="32" selection-end-line="37" selection-end-column="32" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
-                <marker date="1536712576432" expanded="true" signature="67:544" ph="..." />
+                <marker date="1536933284774" expanded="true" signature="67:544" ph="..." />
+                <marker date="1536933284774" expanded="true" signature="2270:2275" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Model.py">
+        <entry file="file://$PROJECT_DIR$/Evaluation.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="134">
-              <caret line="148" column="19" lean-forward="true" selection-start-line="148" selection-start-column="19" selection-end-line="148" selection-end-column="19" />
+            <state relative-caret-position="402">
+              <caret line="130" column="26" selection-start-line="130" selection-start-column="26" selection-end-line="130" selection-end-column="26" />
               <folding>
-                <element signature="e#0#18#0" expanded="true" />
+                <marker date="1536928711041" expanded="true" signature="77:173" ph="..." />
+                <marker date="1536928711041" expanded="true" signature="1034:1113" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/ResNet.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="204">
+              <caret line="108" column="71" lean-forward="true" selection-start-line="108" selection-start-column="71" selection-end-line="108" selection-end-column="71" />
+              <folding>
+                <element signature="e#0#21#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -139,7 +191,21 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>print</find>
+      <find>load_old_pretrain_file</find>
+      <find>np.min(im)</find>
+      <find>epoch</find>
+      <find>net</find>
+      <find>B</find>
+      <find>sigmoid</find>
     </findStrings>
+    <replaceStrings>
+      <replace>self</replace>
+      <replace>max</replace>
+      <replace>min</replace>
+      <replace>self.epoch</replace>
+      <replace>pred</replace>
+      <replace>truth</replace>
+    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -147,20 +213,28 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Analysis.py" />
-        <option value="$PROJECT_DIR$/Dataset.py" />
-        <option value="$PROJECT_DIR$/Loss.py" />
-        <option value="$PROJECT_DIR$/train.py" />
-        <option value="$PROJECT_DIR$/main.py" />
+        <option value="$PROJECT_DIR$/Metrics.py" />
+        <option value="$PROJECT_DIR$/HengCode/Augmentation.py" />
+        <option value="$PROJECT_DIR$/Augmentation.py" />
         <option value="$PROJECT_DIR$/Model.py" />
+        <option value="$PROJECT_DIR$/train.py" />
+        <option value="$PROJECT_DIR$/Graph.py" />
+        <option value="$PROJECT_DIR$/Analysis.py" />
+        <option value="$PROJECT_DIR$/Evaluation.py" />
+        <option value="$PROJECT_DIR$/Loss.py" />
+        <option value="$PROJECT_DIR$/Network.py" />
+        <option value="$PROJECT_DIR$/main.py" />
+        <option value="$PROJECT_DIR$/Dataset.py" />
+        <option value="$PROJECT_DIR$/Models.py" />
+        <option value="$PROJECT_DIR$/ResNet.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="42" />
-    <option name="y" value="-17" />
-    <option name="width" value="1559" />
-    <option name="height" value="918" />
+    <option name="x" value="43" />
+    <option name="y" value="-3" />
+    <option name="width" value="1557" />
+    <option name="height" value="903" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -173,17 +247,21 @@
         </expanded-state>
         <selected-state>
           <State>
-            <id>PyPep8Inspection</id>
+            <id>PySuperArgumentsInspection</id>
           </State>
         </selected-state>
       </profile-state>
     </entry>
+  </component>
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -195,12 +273,11 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Kaggle-2018-Data-Science-Bowl" />
-    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Kaggle-2018-Data-Science-Bowl/loss.py" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.appearance" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -321,15 +398,16 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="42" y="-17" width="1559" height="918" extended-state="6" />
+    <frame x="43" y="-3" width="1557" height="903" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.6002506" visible="true" weight="0.22691807" />
-      <window_info id="Structure" order="1" sideWeight="0.39974937" side_tool="true" visible="true" weight="0.22691807" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.5908142" visible="true" weight="0.22843976" />
+      <window_info id="Structure" order="1" sideWeight="0.4091858" side_tool="true" weight="0.22951886" />
       <window_info id="Favorites" order="2" sideWeight="0.3952381" side_tool="true" weight="0.2243173" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32957393" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.21052632" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4993498" weight="0.39974937" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" sideWeight="0.4993498" visible="true" weight="0.4197995" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32957393" />
@@ -340,7 +418,28 @@
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.24950625" />
+      <window_info anchor="right" x="0" y="0" width="339" height="718" id="Documentation" order="3" side_tool="true" weight="0.32982224" />
     </layout>
+    <layout-to-restore>
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.5908142" weight="0.22886866" />
+      <window_info id="Structure" order="1" sideWeight="0.4091858" side_tool="true" weight="0.22951886" />
+      <window_info id="Favorites" order="2" sideWeight="0.3952381" side_tool="true" weight="0.2243173" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32957393" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.21052632" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4993498" visible="true" weight="0.4197995" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32957393" />
+      <window_info anchor="bottom" id="Version Control" order="7" weight="0.32957393" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32957393" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50065017" side_tool="true" weight="0.39974937" />
+      <window_info anchor="bottom" id="Python Console" order="10" weight="0.26566416" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.24950625" />
+      <window_info anchor="right" x="0" y="0" width="339" height="718" id="Documentation" order="3" side_tool="true" weight="0.32982224" />
+    </layout-to-restore>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
@@ -348,47 +447,52 @@
   <component name="debuggerHistoryManager">
     <expressions id="evaluateExpression">
       <expression>
-        <expression-string>np.unique(mask)</expression-string>
+        <expression-string>(union &gt; 0).sum()</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>mask.max()</expression-string>
+        <expression-string>union &gt; 0</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>mask.unique()</expression-string>
+        <expression-string>union.sum()</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>im.max()</expression-string>
+        <expression-string>union</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>im.min()</expression-string>
+        <expression-string>pred.min()</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>torch.min(im)</expression-string>
+        <expression-string>pred.max()</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>torch.max(im)</expression-string>
+        <expression-string>pred</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>max(im)</expression-string>
+        <expression-string>iou = ((intersection &gt; 0).sum() + 1e-10) / ((union &gt; 0).sum() + 1e-10)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>x.shape</expression-string>
+        <expression-string>self.train_log[metric]</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>plt.show()</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
@@ -399,13 +503,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="132">
           <caret line="15" column="8" selection-start-line="15" selection-start-column="8" selection-end-line="15" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/anaconda3/envs/deep/lib/python3.5/site-packages/torch/nn/modules/conv.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="100">
-          <caret line="300" selection-start-line="300" selection-end-line="300" />
         </state>
       </provider>
     </entry>
@@ -437,13 +534,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/anaconda3/envs/deep/lib/python3.5/site-packages/torch/nn/functional.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="269">
-          <caret line="1650" selection-start-line="1650" selection-end-line="1650" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/anaconda3/envs/deep/lib/python3.5/site-packages/matplotlib/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="152">
@@ -465,79 +555,213 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/HengCode/Augmentation.py" />
+    <entry file="file://$USER_HOME$/anaconda3/envs/deep/lib/python3.5/site-packages/numpy/core/numeric.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="401">
+          <caret line="543" selection-start-line="543" selection-end-line="543" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="326">
+          <caret line="1663" selection-start-line="1663" selection-end-line="1663" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/anaconda3/envs/deep/lib/python3.5/site-packages/torch/optim/optimizer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1">
+          <caret line="37" selection-start-line="37" selection-end-line="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydevd_bundle/pydevd_resolver.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="152">
+          <caret line="200" selection-start-line="200" selection-end-line="200" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/anaconda3/envs/deep/lib/python3.5/site-packages/numpy/core/_methods.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1">
+          <caret line="57" column="21" selection-start-line="57" selection-start-column="21" selection-end-line="57" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$USER_HOME$/anaconda3/envs/deep/lib/python3.5/site-packages/torch/utils/data/dataloader.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="610">
+        <state relative-caret-position="374">
           <caret line="356" selection-start-line="356" selection-end-line="356" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/anaconda3/envs/deep/lib/python3.5/site-packages/torch/nn/modules/module.py">
+    <entry file="file://$USER_HOME$/anaconda3/envs/deep/lib/python3.5/site-packages/numpy/lib/arraypad.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="203">
-          <caret line="476" selection-start-line="476" selection-end-line="476" />
+        <state relative-caret-position="149">
+          <caret line="1300" selection-start-line="1300" selection-end-line="1300" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
+    <entry file="jar://$USER_HOME$/anaconda3/envs/deep/lib/python3.5/site-packages/torchvision-0.2.1-py3.5.egg!/torchvision/models/resnet.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="299">
-          <caret line="23" column="59" selection-start-line="23" selection-start-column="59" selection-end-line="23" selection-end-column="59" />
+        <state relative-caret-position="170">
+          <caret line="12" column="41" selection-start-line="12" selection-start-column="41" selection-end-line="12" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/anaconda3/envs/deep/lib/python3.5/site-packages/torch/nn/functional.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="33507">
+          <caret line="1984" selection-start-line="1984" selection-end-line="1984" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/HengCode/train_256.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1581">
+          <caret line="93" column="13" selection-start-line="93" selection-start-column="13" selection-end-line="93" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../Kaggle-2018-Data-Science-Bowl/NeuralNetworks.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-7008">
+          <caret line="74" column="13" lean-forward="true" selection-start-line="74" selection-start-column="13" selection-end-line="74" selection-end-column="13" />
           <folding>
-            <element signature="e#0#31#0" expanded="true" />
+            <element signature="e#0#23#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Model.py">
+    <entry file="file://$PROJECT_DIR$/../Kaggle-2018-Data-Science-Bowl/loss.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="134">
-          <caret line="148" column="19" lean-forward="true" selection-start-line="148" selection-start-column="19" selection-end-line="148" selection-end-column="19" />
+        <state relative-caret-position="-102" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Augmentation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="139">
+          <caret line="95" column="16" selection-start-line="95" selection-start-column="16" selection-end-line="95" selection-end-column="16" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$USER_HOME$/anaconda3/envs/deep/lib/python3.5/site-packages/numpy/core/fromnumeric.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="98">
+          <caret line="1879" selection-start-line="1879" selection-end-line="1879" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Evaluation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="402">
+          <caret line="130" column="26" selection-start-line="130" selection-start-column="26" selection-end-line="130" selection-end-column="26" />
+          <folding>
+            <marker date="1536928711041" expanded="true" signature="77:173" ph="..." />
+            <marker date="1536928711041" expanded="true" signature="1034:1113" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Loss.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="765">
-          <caret line="45" column="36" lean-forward="true" selection-start-line="45" selection-start-column="36" selection-end-line="45" selection-end-column="36" />
+        <state relative-caret-position="207">
+          <caret line="37" column="32" selection-start-line="37" selection-start-column="32" selection-end-line="37" selection-end-column="32" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
-            <marker date="1536712576432" expanded="true" signature="67:544" ph="..." />
+            <marker date="1536933284774" expanded="true" signature="67:544" ph="..." />
+            <marker date="1536933284774" expanded="true" signature="2270:2275" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Analysis.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="18" column="18" lean-forward="true" selection-start-line="18" selection-start-column="18" selection-end-line="18" selection-end-column="18" />
+        <state relative-caret-position="385">
+          <caret line="31" selection-start-line="31" selection-end-line="31" />
           <folding>
             <element signature="e#0#31#0" expanded="true" />
-            <marker date="1536706993178" expanded="true" signature="278:283" ph="..." />
+            <marker date="1536846718374" expanded="true" signature="278:283" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/train.py">
+    <entry file="file://$USER_HOME$/anaconda3/envs/deep/lib/python3.5/site-packages/torch/nn/modules/module.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="435">
-          <caret line="34" column="29" selection-start-line="34" selection-start-column="29" selection-end-line="34" selection-end-column="29" />
+        <state relative-caret-position="385">
+          <caret line="517" selection-start-line="517" selection-end-line="517" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Network.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="127" selection-start-line="127" selection-end-line="127" />
           <folding>
             <element signature="e#0#27#0" expanded="true" />
+            <marker date="1536933744567" expanded="true" signature="1314:1326" ph="..." />
+            <marker date="1536933744567" expanded="true" signature="5323:5735" ph="..." />
+            <marker date="1536933744567" expanded="true" signature="5768:6089" ph="..." />
+            <marker date="1536933744567" expanded="true" signature="6776:6829" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/anaconda3/envs/deep/lib/python3.5/site-packages/pandas/core/generic.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="146">
+          <caret line="4371" selection-start-line="4371" selection-end-line="4371" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="139">
+          <caret line="37" selection-start-line="37" selection-end-line="37" />
+          <folding>
+            <element signature="e#0#31#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Dataset.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1740">
-          <caret line="114" lean-forward="true" selection-start-line="114" selection-end-line="114" />
+        <state relative-caret-position="-240">
+          <caret line="150" column="20" selection-start-line="150" selection-start-column="20" selection-end-line="150" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/anaconda3/envs/deep/lib/python3.5/site-packages/torch/nn/modules/conv.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="139">
+          <caret line="690" selection-start-line="690" selection-end-line="690" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="122">
+          <caret line="174" column="35" selection-start-line="174" selection-start-column="35" selection-end-line="174" selection-end-column="35" />
           <folding>
-            <element signature="e#0#9#0" expanded="true" />
-            <marker date="1536707257517" expanded="true" signature="313:389" ph="..." />
+            <element signature="e#0#13#0" expanded="true" />
+            <element signature="e#2292#4923#0" />
+            <element signature="e#7741#10436#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ResNet.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="108" column="71" lean-forward="true" selection-start-line="108" selection-start-column="71" selection-end-line="108" selection-end-column="71" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
           </folding>
         </state>
       </provider>
