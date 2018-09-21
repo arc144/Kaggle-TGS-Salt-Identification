@@ -109,6 +109,11 @@ class TGS_Dataset():
         self.folder_path = folder_path
         self.df = self.create_dataset_df(self.folder_path)
         self.df['z'] = normalize(self.df['z'].values)
+        try:
+            empty = np.array([np.sum(m) for m in self.df.masks])
+            print('{} empty masks out of {} total masks'.format(np.sum(empty == 0), len(empty)))
+        except AttributeError:
+            pass
 
     @staticmethod
     def load_images(df, data='train'):

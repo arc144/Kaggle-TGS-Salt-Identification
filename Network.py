@@ -82,6 +82,8 @@ class SegmentationNetwork(nn.Module):
 
 
     def train_network(self, train_loader, val_loader, n_epoch=10):
+        print('Model created, total of {} parameters'.format(
+            sum(p.numel() for p in self.parameters())))
         while self.epoch < n_epoch:
             self.epoch += 1
             lr = np.mean([param_group['lr'] for param_group in self.optimizer.param_groups])

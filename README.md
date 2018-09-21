@@ -52,7 +52,8 @@
 [x] Implement Sørensen–Dice loss (IoU)\
 [x] Implement Hybrid BCE+Dice\
 [x] Implement [Lovász-hinge loss](https://arxiv.org/pdf/1705.08790.pdf)\
-[x] Implement Hybrid BCE+Lovás loss
+[x] Implement Hybrid BCE+Lovás loss\
+[ ] Add Regional Loss: [Adaptive Affinity Field](https://arxiv.org/pdf/1803.10335.pdf)
 >### Cross-validation
 > [x] Implement 5Fold cross-validation\
 [x] Implement stratified cross-validation by mask coverage\

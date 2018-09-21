@@ -112,22 +112,25 @@ class Decoder(nn.Module):
         return x
 
 class PyramidPoolingModule(nn.Module):
-    def __init__(self, pool_list, in_channels):
+    def __init__(self, pool_list, in_channels, size=(128, 128)):
         super(PyramidPoolingModule, self).__init__()
+        self.size = size
         self.pool_list = pool_list
+        self.relu = nn.ReLU(inplace=True)
         self.conv1 = nn.ModuleList([
-            nn.Conv2d(in_channels, 1, kernel_size=1, stride=1, padding=0) for _ in range(len(pool_list))])
+            nn.Conv2d(in_channels, in_channels, kernel_size=1, stride=1, padding=0) for _ in range(len(pool_list))])
         self.conv2 = nn.Conv2d(in_channels + len(pool_list), in_channels, kernel_size=1)
 
     def forward(self, x):
         cat = [x]
         for (k, s), conv in zip(self.pool_list, self.conv1):
-            out = F.max_pool2d(x, kernel_size=k, stride=s)
+            out = F.avg_pool2d(x, kernel_size=k, stride=s)
             out = conv(out)
-            out = F.upsample(out, scale_factor=s, mode='bilinear', align_corners=True)
+            out = F.upsample(out, size=self.size, mode='bilinear', align_corners=True)
             cat.append(out)
         out = torch.cat(cat, 1)
         out = self.conv2(out)
+        out = self.relu(out)
         return out
 
 class ExtractPyramidFeatures(nn.Module):
@@ -478,6 +481,31 @@ class HyperBlock(nn.Module):
         x += self.conv_res(residual)
         return x
 
+class Decoder_v3(nn.Module):
+    def __init__(self, in_channels, convT_channels, out_channels, convT_ratio=2, SE=False):
+        super(Decoder_v3, self).__init__()
+        self.relu = nn.ReLU(inplace=True)
+        self.SE = SE
+        self.convT = nn.ConvTranspose2d(convT_channels, convT_channels // convT_ratio, kernel_size=2, stride=2)
+        self.conv1 = ConvBn2d(in_channels  + convT_channels // convT_ratio, out_channels)
+        self.conv2 = ConvBn2d(out_channels, out_channels)
+        if SE:
+            self.scSE = scSqueezeExcitationGate(out_channels)
+
+        self.conv_res = nn.Conv2d(convT_channels // convT_ratio, out_channels, kernel_size=1, padding=0)
+
+    def forward(self, x, skip):
+        x = self.convT(x)
+        residual = x
+        x = torch.cat([x, skip], 1)
+        x = self.conv1(x)
+        x = self.relu(x)
+        x = self.conv2(x)
+        if self.SE:
+            x = self.scSE(x)
+        x += self.conv_res(residual)
+        x = self.relu(x)
+        return x
 
 #######################################################################
 
@@ -739,25 +767,19 @@ class UNetResNet34_SE_Hyper_v2(SegmentationNetwork):
         self.encoder3 = self.resnet.layer3  # 256
         self.encoder4 = self.resnet.layer4  # 512
 
-        self.center = BottleneckCenterBlock(512, 1024, pool=True, SE=True, bottleneck=4)
+        self.center = CenterBlock(512, 64, pool=False, SE=True)
 
-        self.decoder5 = BottleneckDecoder_v2(512, 512, convT_channels=1024, bottleneck=4, SE=True)
-        self.decoder4 = BottleneckDecoder_v2(256, 256, convT_channels=512,  bottleneck=4, SE=True)
-        self.decoder3 = BottleneckDecoder_v2(128, 128, convT_channels=256,  bottleneck=4, SE=True)
-        self.decoder2 = BottleneckDecoder_v2(64,  64,  convT_channels=128,  bottleneck=4, SE=True)
-        self.decoder1 = BottleneckDecoder_v2(64,  64,  convT_channels=64,   bottleneck=4, SE=True)
+        self.decoder4 = Decoder_v3(256, 64,  64, convT_ratio=1,  SE=True)
+        self.decoder3 = Decoder_v3(128, 64,  64, convT_ratio=1,  SE=True)
+        self.decoder2 = Decoder_v3(64,  64,  64, convT_ratio=1,  SE=True)
+        self.decoder1 = Decoder_v3(64,  64,  64, convT_ratio=1,  SE=True)
 
-        self.Hyperc = HyperBlock(1024, 32, bottleneck=1, SE=True)
-        self.Hyper5 = HyperBlock(512,  32, bottleneck=1, SE=True)
-        self.Hyper4 = HyperBlock(256,  32, bottleneck=1, SE=True)
-        self.Hyper3 = HyperBlock(128,  32, bottleneck=1, SE=True)
-        self.Hyper2 = HyperBlock(64,   32, bottleneck=1, SE=True)
-        self.Hyper1 = HyperBlock(64,   32, bottleneck=1, SE=True)
+        # self.reducer = ConvBn2d(512, 64, kernel_size=1, padding=0)
 
         self.logit = nn.Sequential(
-            BottleneckCenterBlock(32 * 6, 128, pool=False, SE=True, bottleneck=4),
-            BottleneckCenterBlock(128, 64, pool=False, SE=True, bottleneck=4),
-            nn.Conv2d(64, 1, kernel_size=1, padding=0),
+            ConvBn2d(64 * 5, 128, kernel_size=3, padding=1),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(128, 1, kernel_size=1, padding=0),
         )
 
     def forward(self, x, z):
@@ -776,36 +798,34 @@ class UNetResNet34_SE_Hyper_v2(SegmentationNetwork):
         e3 = self.encoder3(e2)  # 16
         e4 = self.encoder4(e3)  # 8
 
-        c = self.center(e4)  # 4
+        c = self.center(e4)  # 8
 
-        d5 = self.decoder5(c,  e4)  # 8
-        d4 = self.decoder4(d5, e3)  # 16
+        d4 = self.decoder4(c, e3)  # 16
         d3 = self.decoder3(d4, e2)  # 32
         d2 = self.decoder2(d3, e1)  # 64
         d1 = self.decoder1(d2, x)   # 128
 
         f = torch.cat([
-            self.Hyper1(d1),
-            F.upsample(self.Hyper2(d2), scale_factor=2,  mode='bilinear', align_corners=False),
-            F.upsample(self.Hyper3(d3), scale_factor=4,  mode='bilinear', align_corners=False),
-            F.upsample(self.Hyper4(d4), scale_factor=8,  mode='bilinear', align_corners=False),
-            F.upsample(self.Hyper5(d5), scale_factor=16, mode='bilinear', align_corners=False),
-            F.upsample(self.Hyperc(c),  scale_factor=32, mode='bilinear', align_corners=False)
+            d1,
+            F.upsample(d2, scale_factor=2,  mode='bilinear', align_corners=False),
+            F.upsample(d3, scale_factor=4,  mode='bilinear', align_corners=False),
+            F.upsample(d4, scale_factor=8,  mode='bilinear', align_corners=False),
+            F.upsample(c,  scale_factor=16, mode='bilinear', align_corners=False)
             ], 1)
         logit = self.logit(f)
         return logit
 
-class UNetResNet34_SE_Hyper_PPM(SegmentationNetwork):
+class UNetResNet34_SE_Hyper_SPP(SegmentationNetwork):
     # PyTorch U-Net model using ResNet(34, 50 , 101 or 152) encoder.
 
     def __init__(self, pretrained=True, activation='relu', **kwargs):
-        super(UNetResNet34_SE_Hyper_PPM, self).__init__(**kwargs)
+        super(UNetResNet34_SE_Hyper_SPP, self).__init__(**kwargs)
         if activation == 'relu':
             self.activation = nn.ReLU(inplace=True)
         elif activation == 'elu':
             self.activation = ELU_1(inplace=True)
 
-        self.resnet = ResNet.resnet34(pretrained=pretrained, activation=self.activation)
+        self.resnet = ResNet.resnet34(pretrained=pretrained, activation=self.activation, SE=True)
 
         self.conv1 = nn.Sequential(
             self.resnet.conv1,
@@ -813,41 +833,29 @@ class UNetResNet34_SE_Hyper_PPM(SegmentationNetwork):
             self.resnet.activation,
         )  # 64
 
+        self.encoder1 = self.resnet.layer1  # 64
+        self.encoder2 = self.resnet.layer2  # 128
+        self.encoder3 = self.resnet.layer3  # 256
+        self.encoder4 = self.resnet.layer4  # 512
 
-        self.encoder1 = nn.Sequential(self.resnet.layer1, scSqueezeExcitationGate(64))# 64
-        self.encoder2 = nn.Sequential(self.resnet.layer2, scSqueezeExcitationGate(128))# 128
-        self.encoder3 = nn.Sequential(self.resnet.layer3, scSqueezeExcitationGate(256))# 256
-        self.encoder4 = nn.Sequential(self.resnet.layer4, scSqueezeExcitationGate(512))# 512
+        self.center = CenterBlock(512, 64, pool=False, SE=True)
 
-        self.center = nn.Sequential(
-            PyramidPoolingModule([(2, 2), (4, 4), (8, 8)], 512),
-            nn.MaxPool2d(kernel_size=2, stride=2),
-            ConvBn2d(512 + 3, 1024,
-                     kernel_size=3, padding=1),
-            self.activation,
-            ConvBn2d(1024, 1024,
-                     kernel_size=3, padding=1),
-            self.activation,
-        )
+        self.decoder4 = Decoder_v3(256, 64,  64, convT_ratio=1,  SE=True)
+        self.decoder3 = Decoder_v3(128, 64,  64, convT_ratio=1,  SE=True)
+        self.decoder2 = Decoder_v3(64,  64,  64, convT_ratio=1,  SE=True)
+        self.decoder1 = Decoder_v3(64,  64,  64, convT_ratio=1,  SE=True)
 
-        self.decoder5 = Decoder(512 + 512, 512, 512, convT_channels=1024, SE=True, activation=self.activation)
-        self.decoder4 = Decoder(256 + 256, 256, 256, convT_channels=512, SE=True, activation=self.activation)
-        self.decoder3 = Decoder(128 + 128, 128, 128, convT_channels=256, SE=True, activation=self.activation)
-        self.decoder2 = Decoder(64 + 64, 64, 64, convT_channels=128, SE=True, activation=self.activation)
-        self.decoder1 = Decoder(32 + 64, 64, 32, convT_channels=64, SE=True, activation=self.activation)
+        self.reducer = ConvBn2d(64 * 5, 64, kernel_size=1, padding=0)
 
-        self.reducer5 = nn.Conv2d(512, 32, kernel_size=1, stride=1)
-        self.reducer4 = nn.Conv2d(256, 32, kernel_size=1, stride=1)
-        self.reducer3 = nn.Conv2d(128, 32, kernel_size=1, stride=1)
-        self.reducer2 = nn.Conv2d(64, 32, kernel_size=1, stride=1)
+        self.ppm = PyramidPoolingModule([(128, 128), (64, 64), (42, 42), (21, 21)], 64 * 5)
 
         self.logit = nn.Sequential(
-            nn.Conv2d(32 * 5, 64, kernel_size=3, padding=1),
-            self.activation,
-            nn.Conv2d(64, 1, kernel_size=1, padding=0),
+            ConvBn2d(64 * 5, 128, kernel_size=3, padding=1),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(128, 1, kernel_size=1, padding=0),
         )
 
-    def forward(self, x):
+    def forward(self, x, z):
         # batch_size,C,H,W = x.shape
         mean = [0.485, 0.456, 0.406]
         std = [0.229, 0.224, 0.225]
@@ -863,24 +871,23 @@ class UNetResNet34_SE_Hyper_PPM(SegmentationNetwork):
         e3 = self.encoder3(e2)  # 16
         e4 = self.encoder4(e3)  # 8
 
-        c = self.center(e4)  # 4
+        c = self.center(e4)  # 8
 
-        d5 = self.decoder5(c, e4)  # 8
-        d4 = self.decoder4(d5, e3)  # 16
+        d4 = self.decoder4(c, e3)  # 16
         d3 = self.decoder3(d4, e2)  # 32
         d2 = self.decoder2(d3, e1)  # 64
         d1 = self.decoder1(d2, x)   # 128
 
         f = torch.cat([
             d1,
-            F.upsample(self.reducer2(d2), scale_factor=2, mode='bilinear', align_corners=False),
-            F.upsample(self.reducer3(d3), scale_factor=4, mode='bilinear', align_corners=False),
-            F.upsample(self.reducer4(d4), scale_factor=8, mode='bilinear', align_corners=False),
-            F.upsample(self.reducer5(d5), scale_factor=16, mode='bilinear', align_corners=False),
-        ], 1)
-        # f = F.dropout2d(f, p=0.50)
+            F.upsample(d2, scale_factor=2,  mode='bilinear', align_corners=False),
+            F.upsample(d3, scale_factor=4,  mode='bilinear', align_corners=False),
+            F.upsample(d4, scale_factor=8,  mode='bilinear', align_corners=False),
+            F.upsample(c,  scale_factor=16, mode='bilinear', align_corners=False)
+            ], 1)
         logit = self.logit(f)
         return logit
+
 
 class UNetResNet50_SE(SegmentationNetwork):
     # PyTorch U-Net model using ResNet(34, 50 , 101 or 152) encoder.

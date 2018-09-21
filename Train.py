@@ -1,5 +1,5 @@
 from Dataset import TGS_Dataset
-from Models import UNetResNet34, UNetResNet34_SE_Hyper, UNetResNet34_SE_Hyper_v2, UNetResNet34_SE, UNetResNet34_SE_Hyper_PPM, UNetResNet50_SE, FPNetResNet34, RefineNetResNet34
+from Models import UNetResNet34, UNetResNet34_SE_Hyper, UNetResNet34_SE_Hyper_v2, UNetResNet34_SE, UNetResNet34_SE_Hyper_SPP, UNetResNet50_SE, FPNetResNet34, RefineNetResNet34
 from contextlib import contextmanager
 import time
 import os
@@ -13,19 +13,19 @@ def timer(title):
 ##############################
 TRAIN_PATH = './Data/Train'
 AUX_PATH = './Data/auxiliary_data'
-# LOAD_PATHS = [
-#     './Saves/UNetResNet34_SE_Hyper/2nd Fine Tunning/2018-09-19 00:43_Fold1_Epoach38_reset0_val0.847',
-# ]
+LOAD_PATHS = [
+    './Saves/UNetResNet34_SE_Hyper_SPP/2018-09-21 17:16_Fold1_Epoach38_reset3_val0.850',
+]
 
-LOAD_PATHS = None
+# LOAD_PATHS = None
 DEBUG = False
 ##############################
-LOSS = 'bce+lovasz'
+LOSS = 'lovasz'
 OPTIMIZER = 'SGD'
 PRETRAINED = True
 N_EPOCH = 150
 BATCH_SIZE = 32
-NET = UNetResNet34_SE_Hyper
+NET = UNetResNet34_SE_Hyper_SPP
 ACTIVATION = 'relu'
 ###########OPTIMIZER###########
 LR = 1e-2
@@ -33,8 +33,8 @@ USE_SCHEDULER = 'CosineAnneling'
 MILESTONES = [20, 40, 75]
 GAMMA = 0.5
 PATIENCE = 10
-T_MAX = 10
-T_MUL = 2
+T_MAX = 70
+T_MUL = 1
 LR_MIN = 0
 ##############################
 COMMENT = 'SGDR (Tmax40, Tmul1), Lovasz, relu, pretrained'
