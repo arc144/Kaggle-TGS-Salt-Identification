@@ -25,9 +25,15 @@ def do_length_encode(x):
     return rle
 
 
+def batch_decode(batch, H, W, fill_value=255):
+    im = []
+    for i in range(len(batch)):
+        im.append(do_length_decode(batch[i], H, W, fill_value))
+    return im
+
 def do_length_decode(rle, H, W, fill_value=255):
     mask = np.zeros((H, W), np.uint8)
-    if rle == '': return mask
+    if rle == '' or rle == 'nan': return mask
 
     mask = mask.reshape(-1)
     rle = np.array([int(s) for s in rle.split(' ')]).reshape(-1, 2)

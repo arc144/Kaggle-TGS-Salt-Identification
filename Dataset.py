@@ -63,9 +63,9 @@ def basic_augment(image, mask, index):
 
 class TorchDataset(Dataset):
 
-    def __init__(self, df, test=False, transform=None):
+    def __init__(self, df, is_test=False, transform=None):
         self.df = df
-        self.test = test
+        self.is_test = is_test
         self.transform = transform
 
     def __len__(self):
@@ -76,25 +76,31 @@ class TorchDataset(Dataset):
 
         im = self.df.images.iloc[index]
 
-        if self.test:
-            mask = None
-        else:
+        if not self.is_test:
             mask = self.df.masks.iloc[index]
 
             if self.transform is not None:
                 im, mask, index = self.transform(im, mask, index)
 
             mask = np.expand_dims(mask, 0)
-            mask = np.pad(mask, pad, 'reflect')
+            mask = np.pad(mask, pad, 'edge')
             mask = torch.from_numpy(mask).float()
 
-
-        im = np.rollaxis(im, 2, 0)
+        if len(im.shape) == 2:
+            depth = np.ones_like(im) * self.df.z.iloc[index]
+            im = np.stack([im, depth, depth], axis=0)
+        elif len(im.shape) == 3:
+            im = np.rollaxis(im, 2, 0)
         # im = np.expand_dims(im, 0)
-        im = np.pad(im, pad, 'reflect')
+        im = np.pad(im, pad, 'edge')
         im = torch.from_numpy(im).float()
 
-        return index, im, mask
+        z = torch.from_numpy(np.expand_dims(self.df.z.iloc[index], 0)).float()
+
+        if self.is_test:
+            return self.df.id.iloc[index], im, z
+        else:
+            return self.df.id.iloc[index], im, mask, z
 
 
 class TGS_Dataset():
@@ -102,39 +108,50 @@ class TGS_Dataset():
     def __init__(self, folder_path):
         self.folder_path = folder_path
         self.df = self.create_dataset_df(self.folder_path)
-
-    def load_images(self, data='train'):
-        self.df['images'] = [
-            cv2.imread(self.df.loc[i]['im_path'],
-                       cv2.IMREAD_COLOR).astype(np.float32) / 255 for i in self.df.index]
-        if data == 'train':
-            self.df['masks'] = [
-                cv2.imread(self.df.loc[i]['mask_path'],
-                           cv2.IMREAD_GRAYSCALE).astype(np.float32) / 255 for i in self.df.index]
+        self.df['z'] = normalize(self.df['z'].values)
 
     @staticmethod
-    def create_dataset_df(folder_path):
+    def load_images(df, data='train'):
+        df['images'] = [
+            normalize(cv2.imread(df.iloc[i]['im_path'],
+                       cv2.IMREAD_COLOR).astype(np.float32)) for i in range(len(df))]
+        if data == 'train':
+            df['masks'] = [
+                normalize(cv2.imread(df.iloc[i]['mask_path'],
+                           cv2.IMREAD_GRAYSCALE).astype(np.float32)) for i in range(len(df))]
+        return df
+
+    @staticmethod
+    def create_dataset_df(folder_path, load=True):
         '''Create a dataset for a specific dataset folder path'''
         # Walk and get paths
         walk = os.walk(folder_path)
-        main_dir_path, subdirs_path, rle_path = next(walk)
+        main_dir_path, subdirs_path, csv_path = next(walk)
         dir_im_path, _, im_path = next(walk)
         # Create dataframe
         df = pd.DataFrame()
         df['id'] = [im_p.split('.')[0] for im_p in im_path]
         df['im_path'] = [os.path.join(dir_im_path, im_p) for im_p in im_path]
         if any(['mask' in sub for sub in subdirs_path]):
+            data = 'train'
             dir_mask_path, _, mask_path = next(walk)
             df['mask_path'] = [os.path.join(dir_mask_path, m_p)
                                for m_p in mask_path]
-            rle_df = pd.read_csv(os.path.join(main_dir_path, rle_path[0]))
+            rle_df = pd.read_csv(os.path.join(main_dir_path, csv_path[1]))
             df = df.merge(rle_df, on='id', how='left')
+        else:
+            data = 'test'
 
+        depth_df = pd.read_csv(os.path.join(main_dir_path, csv_path[0]))
+        df = df.merge(depth_df, on='id', how='left')
+
+        if load:
+            df = TGS_Dataset.load_images(df, data=data)
         return df
 
     def yield_dataloader(self, data='train', nfold=5,
                          shuffle=True, seed=143, stratify=True,
-                         num_workers=8, batch_size=10):
+                         num_workers=8, batch_size=10, auxiliary_df=None):
 
         if data == 'train':
             if stratify:
@@ -150,7 +167,12 @@ class TGS_Dataset():
             loaders = []
             idx = []
             for train_ids, val_ids in kf.split(self.df['id'].values, self.df.coverage_class):
-                train_dataset = TorchDataset(self.df.iloc[train_ids],
+                if auxiliary_df is not None:
+                    train_df = self.df.iloc[train_ids].append(auxiliary_df)
+                else:
+                    train_df = self.df.iloc[train_ids]
+
+                train_dataset = TorchDataset(train_df,
                                              transform=basic_augment)
                 train_loader = DataLoader(train_dataset,
                                           shuffle=shuffle,
@@ -169,7 +191,7 @@ class TGS_Dataset():
             return loaders, idx
 
         elif data == 'test':
-            test_dataset = TorchDataset(self.df)
+            test_dataset = TorchDataset(self.df, is_test=True)
             test_loader = DataLoader(test_dataset,
                                      shuffle=False,
                                      num_workers=num_workers,

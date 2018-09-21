@@ -1,7 +1,8 @@
 import torch.nn as nn
 import torch.nn.functional as F
 import torch
-
+from lovász_loss import lovasz_hinge, binary_xloss
+################### DICE ########################
 def IoU(logit, truth, smooth=1):
     prob = torch.sigmoid(logit)
     intersection = torch.sum(prob * truth)
@@ -19,7 +20,7 @@ class DiceLoss(nn.Module):
         loss = 1 - iou
         return loss
 
-
+################ FOCAL LOSS ####################
 class RobustFocalLoss2d(nn.Module):
     # assume top 10% is outliers
 
@@ -70,7 +71,7 @@ class RobustFocalLoss2d(nn.Module):
 
         return loss
 
-
+################# BCE + DICE ########################
 class BCE_Dice(nn.Module):
     def __init__(self, smooth=1):
         super(BCE_Dice, self).__init__()
@@ -82,3 +83,25 @@ class BCE_Dice(nn.Module):
         dice = self.dice(logit, truth)
         bce = self.bce(logit, truth)
         return dice + bce
+
+############### LOVÁSZ-HINGE ########################
+class Lovasz_Hinge(nn.Module):
+    def __init__(self, per_image=True):
+        super(Lovasz_Hinge, self).__init__()
+        self.per_image = per_image
+
+    def forward(self, logit, truth):
+        return lovasz_hinge(logit, truth,
+                            per_image=self.per_image)
+
+
+############## BCE + LOVÁSZ #########################
+class BCE_Lovasz(nn.Module):
+    def __init__(self, per_image=True):
+        super(BCE_Lovasz, self).__init__()
+        self.per_image = per_image
+
+    def forward(self, logit, truth):
+        bce = binary_xloss(logit, truth)
+        lovasz = lovasz_hinge(logit, truth, per_image=self.per_image)
+        return bce + lovasz
